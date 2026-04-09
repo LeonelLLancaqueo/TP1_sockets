@@ -22,14 +22,16 @@ class SocketSP extends Thread {
             this.oosCli= new ObjectOutputStream(socketCli.getOutputStream());
             this.oisCli= new ObjectInputStream(socketCli.getInputStream()) ;
             boolean continuar= true;
+            int i;
+            String msj; 
             while(continuar){
                 //leo parametro
                 System.out.println("ServidorSP - Esperando mensaje ");
-                int msj= (int)oisCli.readObject(); 
+                msj= (String)oisCli.readObject(); 
             
-                if (msj != 999) {
-                    pronostico = ServidorSP.getPrediccion( ( r.nextInt(1, 10)+msj)%9  );    
-                                //respondo  a cliente
+                if (!msj.equals("-1")) {
+                    i= Integer.parseInt(msj.substring(0,1));
+                    pronostico = ServidorSP.getPronostico( ( r.nextInt(1, 10)+i)%9  );    
                     System.out.println("Servidor SP - Enviando datos");
                     oosCli.writeObject(pronostico);
                 }else{

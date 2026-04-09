@@ -1,8 +1,6 @@
 
 
 import java.io.FileInputStream;
-import java.io.ObjectInput;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
@@ -19,8 +17,7 @@ public class ServidorCentral {
 
     public static void main(String[] args) throws Exception{
         
-        ObjectInput ois = null;
-        ObjectOutputStream oos= null;
+
         Socket socketCliente= null;
 
                 // LEO PARAMETROS DE ARCHIVO CONFIGURACION
@@ -36,8 +33,8 @@ public class ServidorCentral {
         System.out.println("Iniciando Servidor Central esperando en puerto: " + SERVER_PORT_CENTRAL);
         while(true){
             try {
-                System.out.println("Servidor Central - iniciando socket ");
                 socketCliente= ss.accept(); // instanciamos un socket
+                System.out.println("Servidor Central - iniciando socket ");
                 (new SocketCentral(socketCliente, SERVER_IP, SERVER_PORT_SP, SERVER_PORT_SH)).start();
 
             } catch (Exception e) {

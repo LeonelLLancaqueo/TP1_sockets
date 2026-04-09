@@ -22,14 +22,17 @@ class SocketSH extends Thread {
             this.oosCli= new ObjectOutputStream(socketCli.getOutputStream());
             this.oisCli= new ObjectInputStream(socketCli.getInputStream()) ;
             boolean continuar= true;
+            int i;
             while(continuar){
                 //leo parametro
                 System.out.println("ServidorSH - Esperando mensaje ");
-                int msj= (int)oisCli.readObject(); 
+                String msj= (String)oisCli.readObject(); 
             
-                if (msj != 999) {
-                    prediccion = ServidorSH.getPrediccion( ( r.nextInt(1, 10)+msj)%4  );    
-                                //respondo  a cliente
+                if (!msj.equals("-1")) {
+
+                    i= Integer.parseInt(msj);
+                    prediccion = ServidorSH.getPrediccion( ( r.nextInt(1, 10)+i)%4  );    
+                    //respondo  a cliente
                     System.out.println("Servidor SH - Enviando datos");
                     oosCli.writeObject(prediccion);
                 }else{

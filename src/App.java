@@ -3,6 +3,8 @@ import java.io.FileInputStream;
 import java.util.Properties;
 import java.util.Scanner;
 
+
+
 public class App {
     
     
@@ -10,16 +12,17 @@ public class App {
 
         Scanner s= new Scanner(System.in);
         Cliente cli= new Cliente();
-        int valor;
+        String valor_signo, valor_fecha;
         int continuar= 1;
         String res;
         // LEO PARAMETROS DE ARCHIVO CONFIGURACION
         Properties props = new Properties();
         props.load(new FileInputStream("config.properties"));
-        String SERVER_IP= props.getProperty("SERVER.IP");
-        int SERVER_PORT= Integer.parseInt(props.getProperty("CENTRAL.SERVER.PORT")) ;
+        String SERVER_IP= props.getProperty("SERVERS.IP");
+        int SERVER_PORT= Integer.parseInt(props.getProperty("SERVERS.PORT.CENTRAL")) ;
         //conecto con el servidor
         cli.conectarConServidor(SERVER_IP, SERVER_PORT);
+
 
         while(continuar == 1){
             System.out.println("Consulta un horoscopo: ");
@@ -35,8 +38,19 @@ public class App {
             System.out.println("9 - Capricornio");
             System.out.println("10 - Acuario");
             System.out.println("11 - Picis");
-            valor= s.nextInt();
-            res= cli.consultarHoroscopo(valor);
+            
+            System.out.print("Ingrese un Valor: ");
+            valor_signo= s.nextLine();
+            
+            s.nextLine();
+            System.out.println("Ingrese una fecha (dd/mm/yyyy)");
+            valor_fecha= s.nextLine();
+            
+             
+            //DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/mm/yyyy");
+            
+            res= cli.consultarServidorcentral(valor_signo, valor_fecha);
+
             System.out.println("Respuesta: "+res);
 
             System.out.println("Continuar programa?");

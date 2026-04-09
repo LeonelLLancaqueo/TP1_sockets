@@ -1,8 +1,5 @@
 
-
 import java.io.FileInputStream;
-import java.io.ObjectInput;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
@@ -19,8 +16,7 @@ public class ServidorSH {
         return  prediccion[i];
     }
 public static void main(String[] args) throws Exception{
-        ObjectInput ois = null;
-        ObjectOutputStream oos= null;
+
         Socket socketSH= null;        
         
         Properties props = new Properties();
@@ -33,8 +29,8 @@ public static void main(String[] args) throws Exception{
 
         while(true){
             try {
-                System.out.println("ServidorSH - iniciando socket");
                 socketSH= ss.accept(); // instanciamos un socket
+                System.out.println("ServidorSH - iniciando socket");
                 (new SocketSH(socketSH)).start();
 
             } catch (Exception e) {

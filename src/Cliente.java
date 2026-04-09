@@ -3,39 +3,44 @@
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Date;
 
 public class Cliente {
     
     private ObjectOutputStream oos = null;
     private ObjectInputStream ois = null;
     private Socket socket = null;
-    final String SERVER_CENTRAL_IP=  "127.0.0.1";
-    final int SERVER_PORT = 5432;
-    
+
+
     public void conectarConServidor(String ip, int puerto){
         try {
+            
+            
             // instancio el server con la IP y el PORT
             System.out.println("iniciando conexion con Server Central");
-            socket = new Socket(SERVER_CENTRAL_IP,SERVER_PORT);
+            socket = new Socket(ip,puerto);
             oos = new ObjectOutputStream(socket.getOutputStream());
-            ois = new ObjectInputStream(socket.getInputStream());    
+            ois = new ObjectInputStream(socket.getInputStream());   
+             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String consultarServidorcentral(int horoscopo, Date fecha){
+    public String consultarServidorcentral(String horoscopo, String fecha){
         String res= null;
-
+        String msj;
         if(this.socket != null){
             try {
+                String msj_SP, msj_SH;
                 System.out.println("Envio consulta: horoscopo: "+ horoscopo +" y fecha: " + fecha );
-                oos.writeObject((Integer) horoscopo);
-                
+                msj= horoscopo+";"+fecha;
+                oos.writeObject(msj);
                 res = (String)ois.readObject();
-                // muestro la respuesta que envio el server
-                System.out.println("Respuesta recibida: "+ res);
+                msj_SH= "Horoscopo: " + res.substring(0, res.indexOf(';'));
+                msj_SP= "Pronostico Tiempo: "+res.substring(res.indexOf(';')+1,msj.length());
+                // procesar mensaje
+                res= msj_SH+"/n"+msj_SP; 
+
             } catch (Exception e) {
                 e.printStackTrace();
             }            
@@ -45,7 +50,7 @@ public class Cliente {
     public void cerrarConexion(){
         
         try {
-            oos.writeObject((Integer)999);
+            oos.writeObject("-1");
 
             if( ois != null ) ois.close();
             if( oos != null ) oos.close();
