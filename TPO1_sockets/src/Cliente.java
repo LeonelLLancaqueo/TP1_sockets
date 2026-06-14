@@ -9,8 +9,9 @@ public class Cliente {
     private ObjectOutputStream oos = null;
     private ObjectInputStream ois = null;
     private Socket socket = null;
+    private String []arrHoroscopo= {"Aries","Tauro","Geminis","Cancer","Leo","Virgo","Libra","Escorpio","Sagitario","Capricornio","Acuario","Picis"};
 
-
+    
     public void conectarConServidor(String ip, int puerto){
         try {
             
@@ -32,14 +33,15 @@ public class Cliente {
         if(this.socket != null){
             try {
                 String msj_SP, msj_SH;
+                String horoscopoName= arrHoroscopo[Integer.parseInt(horoscopo)];
                 System.out.println("Envio consulta: horoscopo: "+ horoscopo +" y fecha: " + fecha );
                 msj= horoscopo+";"+fecha;
                 oos.writeObject(msj);
                 res = (String)ois.readObject();
-                msj_SH= "Horoscopo: " + res.substring(0, res.indexOf(';'));
-                msj_SP= "Pronostico Tiempo: "+res.substring(res.indexOf(';')+1,msj.length());
+                msj_SH= "Horoscopo "+ horoscopoName+": "+ res.substring(0, res.indexOf(';'));
+                msj_SP= "Pronostico Tiempo fecha "+fecha+": "+res.substring(res.indexOf(';')+1,res.length());
                 // procesar mensaje
-                res= msj_SH+"/n"+msj_SP; 
+                res= msj_SH+" - "+msj_SP; 
 
             } catch (Exception e) {
                 e.printStackTrace();

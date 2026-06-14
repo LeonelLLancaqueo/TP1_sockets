@@ -18,12 +18,12 @@ public class App {
         // LEO PARAMETROS DE ARCHIVO CONFIGURACION
         Properties props = new Properties();
         props.load(new FileInputStream("config.properties"));
-        String SERVER_IP= props.getProperty("SERVERS.IP");
+        String SERVER_IP= props.getProperty("SERVER.IP.CENTRAL");
         int SERVER_PORT= Integer.parseInt(props.getProperty("SERVERS.PORT.CENTRAL")) ;
         //conecto con el servidor
         cli.conectarConServidor(SERVER_IP, SERVER_PORT);
 
-
+        
         while(continuar == 1){
             System.out.println("Consulta un horoscopo: ");
             System.out.println("0 - Aries");
@@ -42,11 +42,10 @@ public class App {
             System.out.print("Ingrese un Valor: ");
             valor_signo= s.nextLine();
             
-            s.nextLine();
             System.out.println("Ingrese una fecha (dd/mm/yyyy)");
             valor_fecha= s.nextLine();
             
-             
+            
             //DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/mm/yyyy");
             
             res= cli.consultarServidorcentral(valor_signo, valor_fecha);
@@ -57,7 +56,7 @@ public class App {
             System.out.println("1 - Si");
             System.out.println("2 - No");
             continuar= s.nextInt();
-            
+            s.nextLine();
             /*
 Aries, Tauro, Géminis, Cáncer, Leo, Virgo, Libra, Escorpio, Sagitario, Capricornio, Acuario y Piscis
 
